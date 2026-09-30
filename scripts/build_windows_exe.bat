@@ -1,11 +1,13 @@
 @echo off
 title Build DRP Trimmer Windows Executable
+cd /d "%~dp0\.."
+
 echo ===================================================
 echo   Building DRP Trimmer Standalone Windows .exe
 echo ===================================================
 echo.
 
-echo [1/3] Checking / Installing PyInstaller...
+echo [1/2] Checking / Installing PyInstaller...
 pip install pyinstaller
 if %ERRORLEVEL% NEQ 0 (
     echo Failed to install PyInstaller. Make sure Python and pip are in your PATH.
@@ -14,8 +16,15 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 echo.
-echo [2/3] Building self-contained DRP_Trimmer.exe with embedded FFmpeg...
-pyinstaller --onefile --noconsole --clean --noconfirm --add-binary "ffmpeg.exe;." --add-binary "ffprobe.exe;." --name "DRP_Trimmer" drp_trimmer_gui.py
+echo [2/2] Building executable...
+if exist "ffmpeg.exe" (
+    echo Found local ffmpeg.exe - embedding inside .exe...
+    pyinstaller --onefile --noconsole --clean --noconfirm --add-binary "ffmpeg.exe;." --add-binary "ffprobe.exe;." --name "DRP_Trimmer" drp_trimmer_gui.py
+) else (
+    echo Building standard standalone .exe...
+    pyinstaller --onefile --noconsole --clean --noconfirm --name "DRP_Trimmer" drp_trimmer_gui.py
+)
+
 if %ERRORLEVEL% NEQ 0 (
     echo Build failed!
     pause
@@ -23,15 +32,9 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 echo.
-echo [3/3] Copying ffmpeg.exe and ffprobe.exe alongside the exe for convenience...
-if not exist "dist" mkdir dist
-copy /y ffmpeg.exe dist\
-copy /y ffprobe.exe dist\
-
-echo.
 echo ===================================================
-echo   SUCCESS! Your standalone executable is ready:
-echo   Folder: dist\DRP_Trimmer.exe
+echo   SUCCESS! Your executable is ready:
+echo   Location: dist\DRP_Trimmer.exe
 echo ===================================================
 echo.
 pause

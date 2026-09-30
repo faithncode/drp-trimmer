@@ -1,6 +1,6 @@
 # DRP Trimmer
 
-Cross-platform (macOS & Windows) desktop tool for trimming multicam ATEM / DaVinci Resolve Project (`.drp`) recordings and exporting synced Premiere XML or FCPXML.
+Cross-platform (macOS & Windows) desktop application and CLI tool for trimming multicam ATEM / DaVinci Resolve Project (`.drp`) recordings and exporting synced Premiere XML or FCPXML.
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-lightgrey)
@@ -22,29 +22,69 @@ Cross-platform (macOS & Windows) desktop tool for trimming multicam ATEM / DaVin
 
 ---
 
+## Project Structure
+
+```
+drp-trimmer/
+├── drp_trimmer_gui.py       # Main Desktop GUI application
+├── drp_to_stacked_xml.py    # Command-line (CLI) conversion utility
+├── samples/                 # Sample DRP switcher logs & reference XML
+│   ├── sample.drp
+│   └── sample_stacked_premiere.xml
+├── scripts/                 # Standalone compilation scripts
+│   ├── build_mac_app.sh     # Builds dist/DRP Trimmer.app for macOS
+│   └── build_windows_exe.bat # Builds dist/DRP_Trimmer.exe for Windows
+├── requirements.txt         # Dependencies (FFmpeg required)
+├── run.bat                  # 1-click launcher for Windows
+├── run.sh                   # 1-click launcher for macOS/Linux
+└── README.md
+```
+
+---
+
 ## Quick Start
 
-### macOS
-1. Ensure Python 3.10+ and FFmpeg are installed:
-   ```bash
-   brew install ffmpeg
-   ```
-2. Run the application:
-   ```bash
-   python3 drp_trimmer_gui.py
-   ```
-   *(Or build a standalone `.app` using PyInstaller)*
+### Running the GUI App
 
-### Windows
-1. Clone or extract the repository.
-2. Run the launcher:
-   ```cmd
-   run.bat
-   ```
-3. To package into a single standalone `.exe` with FFmpeg embedded:
-   ```cmd
-   DRP_Trimmer_Windows\export_exe.bat
-   ```
+#### macOS:
+```bash
+brew install ffmpeg
+./run.sh
+```
+
+#### Windows:
+Double-click `run.bat` or run:
+```cmd
+python drp_trimmer_gui.py
+```
+
+---
+
+### Command-Line (CLI) Usage
+
+You can also run headless batch conversions using `drp_to_stacked_xml.py`:
+
+```bash
+# Export to Premiere Pro XML:
+python3 drp_to_stacked_xml.py samples/sample.drp output.xml --media-root "/path/to/media"
+
+# Export to Final Cut Pro XML:
+python3 drp_to_stacked_xml.py samples/sample.drp output.fcpxml --media-root "/path/to/media"
+```
+
+---
+
+### Building Standalone Executables
+
+- **macOS (`.app` bundle):**
+  ```bash
+  ./scripts/build_mac_app.sh
+  ```
+  Produces `dist/DRP Trimmer.app`.
+
+- **Windows (`.exe` standalone):**
+  Double-click `scripts\build_windows_exe.bat`.
+  Produces `dist\DRP_Trimmer.exe` (with embedded FFmpeg support if `ffmpeg.exe` is present in the directory).
 
 ---
 

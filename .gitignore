@@ -23,4 +23,5 @@ dist/
 *.exe
 *.7z
 *.zip
-DRP_Trimmer_Windows/*.exe
+# Local transfer bundles
+DRP_Trimmer_Windows/
