@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+env/
+venv/
+*.log
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# PyInstaller / Build artifacts
+build/
+dist/
+*.spec
+
+# Large binaries (exceeds GitHub 100MB limit)
+*.exe
+*.7z
+*.zip
+DRP_Trimmer_Windows/*.exe
